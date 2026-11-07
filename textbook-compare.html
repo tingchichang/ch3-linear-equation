@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>html{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>一元一次方程式三版本對照</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: 教研報告式單欄長頁＋頂部章節導覽；三版本以固定欄位順序（康軒／翰林／南一）與固定色標貫穿全頁 */
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --sunk: #eef1f5;
+  --ink: #1b2230;
+  --muted: #5a6476;
+  --line: #d9dee6;
+  --accent: #23527c;
+  --accent-soft: #e3ecf5;
+  --kx: #b4531a;  --kx-soft: #f8e9df;
+  --hl: #1f7a64;  --hl-soft: #dff1eb;
+  --ny: #6a4c9c;  --ny-soft: #ece6f6;
+  --good: #2b7a46; --good-soft: #e0f1e6;
+  --warn: #9a6a0b; --warn-soft: #f7edd3;
+  --bad: #a8321f;  --bad-soft: #f8e2dd;
+  --f-display: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --f-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Consolas", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11151c; --surface: #191f29; --sunk: #141922; --ink: #e5e9f0; --muted: #9aa4b5; --line: #2b3442;
+    --accent: #8db3da; --accent-soft: #1d2b3b;
+    --kx: #eba06d; --kx-soft: #3a2619; --hl: #63c2a7; --hl-soft: #16322b; --ny: #b9a2e3; --ny-soft: #2a2238;
+    --good: #6cc98d; --good-soft: #17301f; --warn: #e2b553; --warn-soft: #33290f; --bad: #ef8a77; --bad-soft: #3a1c17;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11151c; --surface: #191f29; --sunk: #141922; --ink: #e5e9f0; --muted: #9aa4b5; --line: #2b3442;
+  --accent: #8db3da; --accent-soft: #1d2b3b;
+  --kx: #eba06d; --kx-soft: #3a2619; --hl: #63c2a7; --hl-soft: #16322b; --ny: #b9a2e3; --ny-soft: #2a2238;
+  --good: #6cc98d; --good-soft: #17301f; --warn: #e2b553; --warn-soft: #33290f; --bad: #ef8a77; --bad-soft: #3a1c17;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 15.5px; line-height: 1.75;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.35; }
+h2 { font-size: 1.55rem; }
+h3 { font-size: 1.12rem; }
+p { margin: 0; }
+code, .code { font-family: var(--f-mono); font-size: .82em; letter-spacing: .01em; }
+.eyebrow { font-size: .78rem; letter-spacing: .12em; color: var(--muted); font-weight: 500; }
+
+/* top nav */
+nav.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+nav.top .wrap { display: flex; gap: 4px 18px; align-items: center; flex-wrap: wrap; padding-block: 10px; }
+nav.top .brand { font-family: var(--f-display); font-weight: 800; margin-right: auto; font-size: .98rem; }
+nav.top a { color: var(--muted); text-decoration: none; font-size: .9rem; padding: 2px 0; border-bottom: 2px solid transparent; }
+nav.top a:hover, nav.top a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); outline: none; }
+
+/* hero */
+header.hero { background: var(--surface); border-bottom: 1px solid var(--line); }
+header.hero .wrap { padding-block: 40px 32px; display: grid; gap: 22px; }
+header.hero h1 { font-size: clamp(1.7rem, 4.2vw, 2.5rem); font-weight: 800; }
+header.hero .lede { color: var(--muted); max-width: 68ch; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.fact { border-top: 3px solid var(--accent); padding-top: 10px; min-width: 0; }
+.fact b { display: block; font-family: var(--f-display); font-size: 1.6rem; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.fact span { color: var(--muted); font-size: .86rem; }
+@media (max-width: 720px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+section.block { padding-block: 44px 8px; display: grid; gap: 18px; scroll-margin-top: 64px; }
+.sec-head { display: grid; gap: 6px; max-width: 72ch; }
+.sec-head p { color: var(--muted); }
+
+/* publisher tags */
+.pub { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+.pub::before { content: ""; width: 10px; height: 10px; border-radius: 2px; background: currentColor; }
+.kx { color: var(--kx); } .hl { color: var(--hl); } .ny { color: var(--ny); }
+
+/* version columns */
+.versions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .versions { grid-template-columns: minmax(0, 1fr); } }
+.ver { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; min-width: 0; display: flex; flex-direction: column; }
+.ver > header { padding: 14px 16px 12px; border-bottom: 1px solid var(--line); display: grid; gap: 4px; }
+.ver.kx > header { background: var(--kx-soft); } .ver.hl > header { background: var(--hl-soft); } .ver.ny > header { background: var(--ny-soft); }
+.ver > header .pub { font-size: 1.05rem; }
+.ver > header small { color: var(--muted); font-size: .8rem; }
+.ver .sect { padding: 14px 16px; border-bottom: 1px dashed var(--line); color: var(--ink); }
+.ver .sect:last-child { border-bottom: 0; }
+.ver .sect h4 { margin: 0 0 6px; font-size: .98rem; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.ver .sect h4 .code { color: var(--muted); font-weight: 500; }
+.ver ol { margin: 0; padding-left: 1.45em; font-size: .9rem; line-height: 1.65; }
+.ver ol li { padding-left: 2px; }
+.ver ol li::marker { color: var(--muted); font-variant-numeric: tabular-nums; }
+.ver .exams { margin-top: 8px; font-size: .8rem; color: var(--muted); }
+.ver .exams b { color: var(--ink); font-weight: 500; }
+
+/* callouts */
+.notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .notes { grid-template-columns: minmax(0, 1fr); } }
+.note { background: var(--sunk); border-radius: 8px; padding: 14px 16px; min-width: 0; display: grid; gap: 4px; }
+.note h3 { font-size: 1rem; }
+.note p { font-size: .92rem; color: var(--ink); }
+
+/* tables */
+.tbl-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; line-height: 1.6; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+thead th { background: var(--sunk); font-weight: 700; font-size: .82rem; letter-spacing: .04em; color: var(--muted); position: sticky; top: 0; }
+tbody tr:last-child td { border-bottom: 0; }
+tr.group td { background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: .85rem; letter-spacing: .03em; }
+td.req { min-width: 210px; }
+td.cov { min-width: 150px; }
+.small { color: var(--muted); font-size: .8rem; display: block; margin-top: 2px; }
+.order-tbl td { min-width: 120px; }
+.order-tbl td.step { white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 0; width: 1%; }
+
+/* coverage marks */
+.mk { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; font-size: .8rem; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+.mk.full { color: var(--good); background: var(--good-soft); }
+.mk.part { color: var(--warn); background: var(--warn-soft); }
+.mk.none { color: var(--bad); background: var(--bad-soft); }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 18px; font-size: .84rem; color: var(--muted); align-items: center; }
+
+/* pass-rate bar */
+.pbar { display: grid; grid-template-columns: 3.2em minmax(60px, 1fr); align-items: center; gap: 8px; min-width: 130px; }
+.pbar b { font-variant-numeric: tabular-nums; font-family: var(--f-mono); font-size: .82rem; font-weight: 500; }
+.pbar i { display: block; height: 8px; border-radius: 4px; background: var(--sunk); position: relative; overflow: hidden; border: 1px solid var(--line); }
+.pbar i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--p); background: var(--accent); }
+.pbar.low i::after { background: var(--bad); }
+.cite { display: flex; gap: 4px; flex-wrap: wrap; }
+.cite span { font-size: .75rem; font-weight: 700; padding: 0 6px; border-radius: 4px; }
+.cite .kx { background: var(--kx-soft); } .cite .hl { background: var(--hl-soft); } .cite .ny { background: var(--ny-soft); }
+.cite .no { color: var(--muted); font-weight: 500; background: transparent; padding: 0; }
+
+/* trend */
+.trend { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 760px) { .trend { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.yr { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 4px; min-width: 0; }
+.yr .y { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); }
+.yr .t { font-weight: 700; font-size: .92rem; line-height: 1.45; }
+.yr .c { font-size: .78rem; color: var(--muted); }
+
+/* gaps */
+.gaps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 860px) { .gaps { grid-template-columns: minmax(0, 1fr); } }
+.gap { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.gap .top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
+.gap .id { font-family: var(--f-mono); font-size: .78rem; color: var(--muted); }
+.gap dl { margin: 0; display: grid; grid-template-columns: 5.2em minmax(0, 1fr); gap: 6px 10px; font-size: .9rem; }
+.gap dt { color: var(--muted); font-size: .82rem; padding-top: 2px; }
+.gap dd { margin: 0; min-width: 0; }
+.gap .ex { background: var(--sunk); border-radius: 6px; padding: 10px 12px; font-size: .86rem; }
+.gap .ex b { font-family: var(--f-mono); font-weight: 500; font-size: .8rem; color: var(--accent); }
+
+/* textbook examples */
+.eg-tbl td { min-width: 200px; }
+.eg-tbl td.concept { min-width: 150px; width: 15%; }
+.eg-tbl td.concept b { display: block; font-size: .92rem; }
+.eg-tbl td.concept span { display: block; color: var(--muted); font-size: .78rem; margin-top: 4px; }
+.eg { display: grid; gap: 6px; }
+.eg q { quotes: none; display: block; background: var(--sunk); border-radius: 6px; padding: 8px 10px; font-size: .86rem; line-height: 1.6; }
+.eg .ref { font-size: .75rem; color: var(--muted); font-family: var(--f-mono); }
+.eg .why { font-size: .8rem; color: var(--muted); }
+.gap .near { border-left: 3px solid var(--line); padding-left: 10px; font-size: .86rem; display: grid; gap: 4px; }
+.gap .near b { font-size: .78rem; color: var(--muted); font-weight: 700; letter-spacing: .04em; }
+
+.sources { font-size: .86rem; color: var(--muted); display: grid; gap: 10px; }
+.sources ul { margin: 0; padding-left: 1.2em; display: grid; gap: 2px; }
+.sources code { color: var(--ink); }
+footer { padding-block: 40px 56px; color: var(--muted); font-size: .8rem; }
+
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+<nav class="top" aria-label="章節導覽">
+  <div class="wrap">
+    <span class="brand">七上第三章・一元一次方程式</span>
+    <a href="#structure">脈絡架構</a>
+    <a href="#compare">對照比較表</a>
+    <a href="#examples">課本例題</a>
+    <a href="#cap">會考相關題</a>
+    <a href="#gaps">缺口分析</a>
+    <a href="#sources">資料來源</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">115 學年度 1 上｜康軒・翰林・南一｜對照 108 課綱 A-7-1～A-7-3 與學習扶助基本學習內容</div>
+    <h1>一元一次方程式：三版本脈絡、課綱對照與會考缺口</h1>
+    <p class="lede">依據「0分析」資料夾內三家出版社 115 上備課用書與教用習作、數學領綱、課程手冊 7 年級解析、國中數學科基本學習內容，以及 107～115 年會考數學科官方試題分析整理。先看三版本怎麼排第三章，再看與課綱的對應，最後列出會考考過、但三版本第三章正文沒有教到的地方。</p>
+    <div class="facts">
+      <div class="fact"><b>3 × 3 節</b><span>三版本皆分 3 節：式子運算／解方程式／應用問題</span></div>
+      <div class="fact"><b>3 條</b><span>領綱學習內容 A-7-1、A-7-2、A-7-3；學習表現 a-IV-1、a-IV-2</span></div>
+      <div class="fact"><b>14 題</b><span>107～115 年會考與本章概念直接相關的試題（含非選）</span></div>
+      <div class="fact"><b>6 項</b><span>會考考過、三版本正文未處理、只以歷屆題帶過或僅一版教到的概念</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ 1. 脈絡架構 ============ -->
+<section class="block" id="structure">
+  <div class="sec-head">
+    <div class="eyebrow">一、三版本脈絡架構</div>
+    <h2>各版本第三章的節次與教學順序</h2>
+    <p>依備課用書的例題與小節標題排序，編號即課本出現順序。頁碼為課本頁碼，「歷屆」為該節備課用書標註收錄的基測、會考題。</p>
+  </div>
+
+  <div class="versions">
+    <!-- 康軒 -->
+    <article class="ver kx">
+      <header>
+        <span class="pub kx">康軒版</span>
+        <small>章名「一元一次方程式」｜課本 P.164–217｜3-1 共 13 例、3-2 共 9 例、3-3 共 8 例</small>
+      </header>
+      <div class="sect">
+        <h4>3-1 代數式的化簡 <span class="code">A-7-1</span></h4>
+        <ol>
+          <li>以文字符號代表數（笛卡兒以 x 表未知數）</li>
+          <li>乘法、除法的簡記（3/2 x 與 3x/2）</li>
+          <li>以文字符號列式（存款、分原子筆）</li>
+          <li>求代數式的值（標準體重公式）</li>
+          <li>一元一次式；以交換律、結合律做乘除</li>
+          <li>分配律（鋪色凸顯）</li>
+          <li>同類項合併</li>
+          <li>去括號：括號前「－」號要變號</li>
+          <li>分式通分化簡（例 12）</li>
+          <li>情境列式後化簡（例 13：x 張千元鈔平分）</li>
+          <li>腦動動、挑錯題（x+3/2 － x−1/3）</li>
+        </ol>
+        <p class="exams">歷屆：<b>113 會考</b>（氣溫，52%）、<b>112 會考</b>（停車費，43%）</p>
+      </div>
+      <div class="sect">
+        <h4>3-2 一元一次方程式 <span class="code">A-7-2・A-7-3</span></h4>
+        <ol>
+          <li>用文字符號列一元一次方程式（例 1 年齡）</li>
+          <li>方程式的解：代入法、枚舉法</li>
+          <li>等量公理（天平）：加、減、乘、除各一例（例 2–5）</li>
+          <li>等號的對稱性</li>
+          <li>由等量公理導出移項法則（例 6）</li>
+          <li>兩邊都有未知數（例 7）</li>
+          <li>含小括號、中括號（例 8）</li>
+          <li>分數係數同乘去分母（例 9）</li>
+          <li>挑錯題：比較兩位學生解法</li>
+        </ol>
+        <p class="exams">歷屆：<b>108 會考非選</b>（判斷文宣是否合理）</p>
+      </div>
+      <div class="sect">
+        <h4>3-3 應用問題 <span class="code">A-7-3</span></h4>
+        <ol>
+          <li>數字問題（例 1：數線上兩隻青蛙、相反數）</li>
+          <li>數量問題（例 2：捐款、全票學生票）</li>
+          <li>盈不足問題（例 3：灶位、民宿分房）</li>
+          <li>打折問題（例 4：鉛筆盒、哥哥預算）</li>
+          <li>幾何問題（例 5：梯形面積）</li>
+          <li>年齡問題（例 6：年齡差不變）</li>
+          <li>速率問題（例 7：上下山），補充工程、順逆風</li>
+          <li>解的合理性（例 8：硬幣、孔雀魚數量非整數）</li>
+          <li>數學史：算籌、《九章算術》、丟番圖墓誌銘</li>
+        </ol>
+        <p class="exams">歷屆：<b>111 會考</b>（70%）、<b>114 會考第 14 題</b>（56%）</p>
+      </div>
+    </article>
+
+    <!-- 翰林 -->
+    <article class="ver hl">
+      <header>
+        <span class="pub hl">翰林版</span>
+        <small>章名「一元一次方程式」｜3-1 P.156、3-2 P.174、3-3 P.190｜3-1 共 13 例、3-2 共 9 例、3-3 共 7 例</small>
+      </header>
+      <div class="sect">
+        <h4>3-1 式子的運算 <span class="code">A-7-1</span></h4>
+        <ol>
+          <li>課前練習：□、△ 的逆運算（銜接國小）</li>
+          <li>代數式：以 x 代表尚未確定的數</li>
+          <li>符號的簡記：乘法（例 1）、含加減（例 2）</li>
+          <li>以符號代表數（例 3）、以符號列式（例 4）</li>
+          <li>求式子的值（例 5）、同一式子不同的值（例 6）</li>
+          <li>一元一次式；同類項的加減（例 7、8）</li>
+          <li>乘除化簡：交換律、結合律（例 9）</li>
+          <li>分配律與去括號（例 10–12）</li>
+          <li>綜合化簡（例 13）</li>
+        </ol>
+        <p class="exams">歷屆：<b>92 基測</b>、<b>107 會考第 12 題</b>、<b>109 會考第 14 題</b>、<b>113 會考第 16 題</b></p>
+      </div>
+      <div class="sect">
+        <h4>3-2 解一元一次方程式 <span class="code">A-7-2・A-7-3</span></h4>
+        <ol>
+          <li>一元一次方程式及其解；解的檢驗（例 1）</li>
+          <li>等量公理（天平）：加、減、乘、除（例 2–5），並示範省略步驟</li>
+          <li>等量公理與移項法則並列對照（例 6）</li>
+          <li>兩邊都含有未知數（例 7）</li>
+          <li>以移項法則解含括號方程式（例 8）</li>
+          <li>分數係數：兩種解法（例 9）</li>
+          <li>數學史：阿拉伯解方程歌謠、「方程」一詞由來</li>
+        </ol>
+        <p class="exams">歷屆：<b>102 基測第 27 題</b></p>
+      </div>
+      <div class="sect">
+        <h4>3-3 應用問題 <span class="code">A-7-3</span></h4>
+        <ol>
+          <li>依題意列方程式（例 1：成績、咖啡與礦泉水）</li>
+          <li>年齡問題（例 2）</li>
+          <li>點餐問題（例 3：套餐與兒童餐，和為定值）</li>
+          <li>分配問題（例 4：盈不足，比較兩種設未知數）</li>
+          <li>補給站：成本、定價、售價、利潤</li>
+          <li>折扣問題（例 5：七五折賠、九折賺，求成本）</li>
+          <li>速率問題（例 6：倉儲機器人往返）</li>
+          <li>解的合理性（例 7）</li>
+          <li>會考素養模擬：濃度百分比、能源效率、木條間隔、超商折扣</li>
+        </ol>
+        <p class="exams">歷屆：<b>107 會考第 10 題</b>、<b>108 會考第 20 題、非選 1</b>、<b>110 第 16 題</b>、<b>111 第 11 題</b>、<b>114 第 14 題</b></p>
+      </div>
+    </article>
+
+    <!-- 南一 -->
+    <article class="ver ny">
+      <header>
+        <span class="pub ny">南一版</span>
+        <small>章名「一元一次方程式」｜課本 P.154–208｜3-1 共 12 例、3-2 共 8 例、3-3 共 7 例｜附核心概念地圖 12 概念</small>
+      </header>
+      <div class="sect">
+        <h4>3-1 以符號列式與運算 <span class="code">A-7-1</span></h4>
+        <ol>
+          <li>章首漫畫：文具帳單（全章主情境）</li>
+          <li>代數式：國小 □、甲、乙 → x</li>
+          <li>代數式的簡記：數字寫前、1x、−x、x³</li>
+          <li>除法改乘倒數再簡記（x÷5/2＝2x/5）</li>
+          <li>用符號列式（例 1–3：月租費、全票學生票、促銷）</li>
+          <li>代數式的值（例 4；x 值不一定是整數）</li>
+          <li>一元一次式：一次項、係數、常數項</li>
+          <li>乘法：結合律（例 5）、分配律（例 6）、負號去括號（例 7）</li>
+          <li>除法（例 8）</li>
+          <li>同類項合併；加法（例 9）、減法（例 10）</li>
+          <li>去括號混合運算（例 11）</li>
+          <li>分式通分、中括號（例 12）</li>
+        </ol>
+        <p class="exams">歷屆：<b>92、99 基測</b>、<b>113 會考</b>（52%）、<b>109 會考(一)</b>（54%）</p>
+      </div>
+      <div class="sect">
+        <h4>3-2 一元一次方程式的列式與求解 <span class="code">A-7-2・A-7-3</span></h4>
+        <ol>
+          <li>由章首情境列出 11x＋70＝455</li>
+          <li>純文字句子轉方程式：多→＋、少→－、倍→×、是→＝（例 1、2）</li>
+          <li>方程式的解：列表代入，體會「大海撈針」</li>
+          <li>等量公理（天平）：加減、乘除（例 3、4）</li>
+          <li>移項法則四種形式（例 5）</li>
+          <li>兩邊都有未知數（例 6）</li>
+          <li>含括號（例 7）</li>
+          <li>分數係數同乘最小公倍數（例 8）</li>
+          <li>找錯：去分母漏乘常數項</li>
+        </ol>
+        <p class="exams">歷屆：<b>91、96 基測</b></p>
+      </div>
+      <div class="sect">
+        <h4>3-3 一元一次方程式的應用 <span class="code">A-7-3</span></h4>
+        <ol>
+          <li>解題三步驟：設未知數→列方程式→解方程式</li>
+          <li>折扣問題（例 1：第二件 6 折、買二送一）</li>
+          <li>購物找零（例 2）</li>
+          <li>數量問題（例 3：募款食材箱、兩分球三分球）</li>
+          <li>年齡問題（例 4）</li>
+          <li>行程問題（例 5：相遇、追及）</li>
+          <li>人數分配，盈不足（例 6）</li>
+          <li>解的合理性（例 7：門票張數），含「本題無解」的情境</li>
+          <li>素養動畫：丟番圖的墓碑</li>
+        </ol>
+        <p class="exams">歷屆：<b>108 會考</b>（45%）、<b>110 會考(一)</b>、<b>111 會考(一)</b>（70%）</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="notes">
+    <div class="note">
+      <h3>3-1 運算順序不同</h3>
+      <p>康軒、南一先教乘除（交換律、結合律、分配律）再教同類項加減；翰林反過來，先教同類項加減（例 7、8），再教乘除與分配律（例 9–12）。翰林另有「課前練習」以 □、△ 逆運算銜接國小。</p>
+    </div>
+    <div class="note">
+      <h3>列方程式的起點不同</h3>
+      <p>南一在 3-2 開頭先練「多、少、倍、是」的純文字轉譯，生活情境留到 3-3；康軒 3-2 例 1 直接用年齡情境列式；翰林 3-2 從「解的檢驗」切入，列式集中在 3-3 例 1。</p>
+    </div>
+    <div class="note">
+      <h3>移項法則的處理</h3>
+      <p>三版本都以天平呈現等量公理。康軒由等量公理「導出」移項（例 6）；翰林把兩種寫法並排對照（例 6、7）；南一整理成四種移項形式（x−a＝b⇒x＝b＋a 等），較接近規則化呈現。</p>
+    </div>
+    <div class="note">
+      <h3>應用題型的取捨</h3>
+      <p>年齡、盈不足、折扣、速率、合理性是三版本共有題型。康軒多了幾何（梯形面積）與工程、順逆風；翰林多了「成本、定價、利潤」與比較設元；南一多了購物找零與相遇、追及。</p>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table class="order-tbl">
+      <caption class="small" style="caption-side: top; text-align: left; padding: 10px 12px 0;">3-1 教學順序對照（數字為該版本中的出現順序）</caption>
+      <thead><tr><th>概念</th><th><span class="pub kx">康軒</span></th><th><span class="pub hl">翰林</span></th><th><span class="pub ny">南一</span></th></tr></thead>
+      <tbody>
+        <tr><td>以符號代表數／代數式</td><td>1</td><td>1（另有課前練習）</td><td>1</td></tr>
+        <tr><td>符號簡記（乘、除）</td><td>2</td><td>2</td><td>2</td></tr>
+        <tr><td>以符號列式</td><td>3</td><td>3</td><td>3</td></tr>
+        <tr><td>代數式求值</td><td>4</td><td>4</td><td>4</td></tr>
+        <tr><td>一元一次式名詞</td><td>5</td><td>5</td><td>5</td></tr>
+        <tr><td>乘除化簡（交換、結合律）</td><td>5</td><td>7</td><td>6</td></tr>
+        <tr><td>分配律、去括號</td><td>6、8</td><td>8</td><td>6、7</td></tr>
+        <tr><td>同類項加減</td><td>7</td><td>6</td><td>8</td></tr>
+        <tr><td>分式通分化簡</td><td>9</td><td>9（綜合）</td><td>9</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 2. 對照比較表 ============ -->
+<section class="block" id="compare">
+  <div class="sec-head">
+    <div class="eyebrow">二、對照領綱與基本學習內容</div>
+    <h2>三版本比較表</h2>
+    <p>「領綱／課程手冊」欄取自領綱學習內容與 7 年級課程手冊解析的基本說明、條目範圍；「基本學習內容」欄取自國中數學科基本學習內容（學習扶助用）的 AC／ACP 條目與教學提醒。</p>
+  </div>
+  <div class="legend">
+    <span><span class="mk full">● 完整</span> 正文有專門例題或段落</span>
+    <span><span class="mk part">◐ 部分</span> 只有零星出現、只在備課補充或歷屆題</span>
+    <span><span class="mk none">○ 未見</span> 第三章正文與備課用書中沒有找到</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>課綱條目</th><th>領綱／課程手冊要求</th><th>基本學習內容（學習扶助）</th><th><span class="pub kx">康軒</span></th><th><span class="pub hl">翰林</span></th><th><span class="pub ny">南一</span></th></tr>
+      </thead>
+      <tbody>
+        <tr class="group"><td colspan="6">A-7-1 代數符號｜a-IV-1 理解並應用符號及文字敘述表達概念、運算、推理及證明</td></tr>
+        <tr>
+          <td><code>A-7-1</code> 符號代表數、簡記</td>
+          <td class="req">×記成「·」或省略；1×a＝a、(−1)×a＝−a；(4/7)x＝4x/7</td>
+          <td class="req">ACP-7-1-1-10～12：英文字母表未知數與變數；ax、x/a 的簡記</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">乘除簡記、3/2 x 與 3x/2 並列</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 1、2 分乘法與含加減</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">除法先改乘倒數再簡記</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-1</code> 以符號表徵交換律、結合律、分配律</td>
+          <td class="req">a＋b＝b＋a、a(b＋c)＝ab＋ac，強調 a、b、c 為任意數</td>
+          <td class="req">ACP-7-1-1-1～9：九條運算律的符號表徵，含 a−(b−c)＝a−b＋c</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">以「12 瓶可樂」解釋結合律</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">重點回顧列出三律</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">歸納「乘法運算性質」</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-1</code> 一次式化簡與同類項</td>
+          <td class="req">只做一次式；常見錯誤：3(x＋1) 漏乘、(9x−3)/3 化成 3x−3</td>
+          <td class="req">運算只含一層括號；情境列式以無括號或一個括號為原則</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">含分式、腦動動與挑錯題</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">先教同類項再教乘除</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">含中括號，超出扶助範圍</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-1</code> 以符號記錄生活情境、求式子的值</td>
+          <td class="req">用代數式記錄情境；例 1000x＋500y 代入求總額</td>
+          <td class="req">ACP-7-1-1-15：用一元一次式表示生活中的數量關係</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">標準體重公式求值</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 5、6 求不同的值</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 4 列表求值</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-1</code> 多個文字符號的一次式（二元一次式）</td>
+          <td class="req">手冊定義的「一次式」含 x＋2y−1；釋例 1000x＋500y</td>
+          <td class="req">AC-7-1-1「一元一次式及二元一次式」；ACP-7-1-1-16 用二元一次式表示生活情境</td>
+          <td class="cov"><span class="mk part">◐ 部分</span><span class="small">說明 a、b、c…x、y、z 都可代表數；例題皆一元</span></td>
+          <td class="cov"><span class="mk part">◐ 部分</span><span class="small">「父親年齡 y 歲」等單一 y；未同時出現兩個未知數</span></td>
+          <td class="cov"><span class="mk part">◐ 部分</span><span class="small">只有 ½×a×b、ab 簡記</span></td>
+        </tr>
+
+        <tr class="group"><td colspan="6">A-7-2 一元一次方程式的意義｜a-IV-2</td></tr>
+        <tr>
+          <td><code>A-7-2</code> 方程式與解的意義</td>
+          <td class="req">「方程式」是含未知數的等式；代入使等式成立的數為解</td>
+          <td class="req">AC-7-2-2：解是使等號兩邊成立的數；只處理唯一解</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">代入法、枚舉法</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 1 解的檢驗</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">列表代入到 x＝35</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-2</code> 具體情境列方程式</td>
+          <td class="req">可用線段圖輔助；迷思：「父親年齡為兩倍」寫成 40＋x＝12×2</td>
+          <td class="req">ACP-7-2-1-2；列式以不超過四步驟為原則，不引入兩個未知數的情境</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">3-2 例 1 年齡列式</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">集中在 3-3 例 1</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">「多、少、倍、是」轉譯表</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-2</code> 等號的對稱性</td>
+          <td class="req">養成把未知數寫在左邊的習慣</td>
+          <td class="req">6＝x＋5 應以對稱性改寫成 x＋5＝6，不用等量公理搬移</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">備課提醒「等號的對稱性」</span></td>
+          <td class="cov"><span class="mk part">◐ 部分</span><span class="small">未見專段說明</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">提醒不必強求 x 在左</span></td>
+        </tr>
+
+        <tr class="group"><td colspan="6">A-7-3 一元一次方程式的解法與應用｜a-IV-2</td></tr>
+        <tr>
+          <td><code>A-7-3</code> 等量公理</td>
+          <td class="req">等式兩邊同加、減、乘、除一數（除數≠0）仍成立</td>
+          <td class="req">用沙包、砝碼、天平表徵；以 5x＋3＝3x＋7 三步驟記錄</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">天平，四則各一例</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">天平，並示範省略步驟</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">天平，加減與乘除</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-3</code> 移項法則</td>
+          <td class="req">等量公理是移項法則的基礎，先熟練等量公理</td>
+          <td class="req">移項並非必要工具；避免以「移項變號」口訣取代，也避免以反元素教學</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">由等量公理導出（例 6）</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">兩種寫法並列對照</span></td>
+          <td class="cov"><span class="mk part">◐ 部分</span><span class="small">四種移項形式較像規則表，宜補等量公理連結</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-3</code> 含括號、分數係數</td>
+          <td class="req">常見錯誤：6(x/2＋x/3)＝1 右邊漏乘</td>
+          <td class="req">分數以「兩邊同乘一個整數即可化整」為原則</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 8、9＋挑錯題</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 9 兩種解法</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 8＋找錯（漏乘）</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-3</code> 驗算與解的合理性</td>
+          <td class="req">應用解的意義於驗算；不考慮無解或無窮多解</td>
+          <td class="req">ACP-7-3-1-3 能驗算解是否正確</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 8 硬幣、孔雀魚</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 7 解的合理性</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">例 7；3-3 起先暫緩驗算</span></td>
+        </tr>
+        <tr>
+          <td><code>A-7-3</code> 應用問題</td>
+          <td class="req">能利用等量公理及移項法則解決具體情境問題</td>
+          <td class="req">ACP-7-3-1-5；情境宜單純</td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">8 類題型，最多元</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">7 類，附會考素養模擬</span></td>
+          <td class="cov"><span class="mk full">● 完整</span><span class="small">7 類，以購物情境為主</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption class="small" style="caption-side: top; text-align: left; padding: 10px 12px 0;">3-3 應用題型對照（括號內為例題情境）</caption>
+      <thead><tr><th>題型</th><th><span class="pub kx">康軒</span></th><th><span class="pub hl">翰林</span></th><th><span class="pub ny">南一</span></th></tr></thead>
+      <tbody>
+        <tr><td>數字問題</td><td><span class="mk full">●</span> 數線青蛙、相反數</td><td><span class="mk full">●</span> 依題意列式（成績）</td><td><span class="mk part">◐</span> 3-2 純文字列式</td></tr>
+        <tr><td>數量和（兩種單價）</td><td><span class="mk full">●</span> 捐款、全票學生票</td><td><span class="mk full">●</span> 套餐與兒童餐</td><td><span class="mk full">●</span> 食材箱、兩分球三分球</td></tr>
+        <tr><td>盈不足／分配</td><td><span class="mk full">●</span> 灶位、民宿</td><td><span class="mk full">●</span> 李子分配，比較設元</td><td><span class="mk full">●</span> 師生人數</td></tr>
+        <tr><td>折扣、成本與利潤</td><td><span class="mk full">●</span> 鉛筆盒打 9 折</td><td><span class="mk full">●</span> 七五折賠、九折賺</td><td><span class="mk full">●</span> 第二件 6 折、買二送一</td></tr>
+        <tr><td>購物找零</td><td><span class="mk none">○</span></td><td><span class="mk none">○</span></td><td><span class="mk full">●</span> 餅乾礦泉水找 30 元</td></tr>
+        <tr><td>年齡</td><td><span class="mk full">●</span> 年齡差不變</td><td><span class="mk full">●</span> 兄弟年齡和</td><td><span class="mk full">●</span> 父女年齡</td></tr>
+        <tr><td>速率、行程</td><td><span class="mk full">●</span> 上下山、順逆風</td><td><span class="mk full">●</span> 機器人往返</td><td><span class="mk full">●</span> 相遇、追及</td></tr>
+        <tr><td>工程</td><td><span class="mk part">◐</span> 備課補充</td><td><span class="mk none">○</span></td><td><span class="mk none">○</span></td></tr>
+        <tr><td>幾何量</td><td><span class="mk full">●</span> 梯形面積</td><td><span class="mk part">◐</span> 素養模擬木條間隔</td><td><span class="mk part">◐</span> 自評題</td></tr>
+        <tr><td>濃度、百分比</td><td><span class="mk none">○</span></td><td><span class="mk part">◐</span> 素養模擬可爾必思</td><td><span class="mk none">○</span></td></tr>
+        <tr><td>解的合理性</td><td><span class="mk full">●</span> 硬幣、孔雀魚</td><td><span class="mk full">●</span> 年齡不合理</td><td><span class="mk full">●</span> 門票張數</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 2b. 課本例題對照 ============ -->
+<section class="block" id="examples">
+  <div class="sec-head">
+    <div class="eyebrow">二之一、課本例題對照</div>
+    <h2>用課本例子看三版本怎麼講同一個概念</h2>
+    <p>每格摘錄該版本課本或備課用書中的代表例題（數字與式子照原書，敘述精簡），標示「例」的編號或課本頁碼。沒有對應例題的格子寫明「未見」，並說明最接近的內容是什麼。</p>
+  </div>
+  <div class="legend">
+    <span><span class="mk full">● 有講解</span> 有專門例題</span>
+    <span><span class="mk part">◐ 只有觸及</span> 只出現在說明、自評或歷屆題</span>
+    <span><span class="mk none">○ 未見</span></span>
+  </div>
+
+  <div class="tbl-wrap">
+    <table class="eg-tbl">
+      <thead><tr><th>概念</th><th><span class="pub kx">康軒</span></th><th><span class="pub hl">翰林</span></th><th><span class="pub ny">南一</span></th></tr></thead>
+      <tbody>
+        <tr class="group"><td colspan="4">3-1 代數式與一元一次式（A-7-1）</td></tr>
+        <tr>
+          <td class="concept"><b>除法的簡記</b><span>x÷a 寫成 x/a，負號位置</span></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>「除以一個不為 0 的數，就是乘以它的倒數」：x÷5＝x×1/5；並說明 (3/2)x 也可記為 3x/2。</q><span class="ref">3-1 除法的簡記</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>x×15 或 15×x 簡記成 15x；x×(−6) 簡記成 −6x；隨後處理 2x÷(−2/3)。</q><span class="ref">3-1 例 1、例 2</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>x÷(5/2)＝x×(2/5)＝(2/5)x＝2x/5；x÷(−5/2)＝−2x/5＝2x/(−5)。三種寫法並列。</q><span class="ref">3-1 課文 P.158</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>用運算律解釋化簡</b><span>交換律、結合律</span></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>2 組可樂、每組 6 瓶各 x 元：2·(6x)＝(2·6)·x＝12x，用「12 瓶可樂」對照結合律。</q><span class="ref">3-1 一元一次式與數的乘法</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>8x×5＝5×8x（交換律）＝(5×8)×x（結合律）＝40x，每步標出所用的律。</q><span class="ref">3-1 例 9</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>5x×6＝5×x×6＝5×6×x＝30x；例 5：10x×(−0.3)＝−3x。</q><span class="ref">3-1 例 5</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>同類項</b></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>3x＋2−4x−1 中，3x、−4x 是同類項，2、−1 是同類項；搭配「猜猜我是誰」把 5x 的同類項著色。</q><span class="ref">3-1 主題 3</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>6x 和 −2x 是同類項，2x 和 3y 不是；用 a×c＋b×c＝(a＋b)×c 說明 2x＋3x＝5x。例 7：−15x＋9x、7x−(−5x)。</q><span class="ref">3-1 例 7</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>5x＋15＋3x＋25 中，5x 與 3x、15 與 25 是同類項；例 9：(11x−1)＋(5x−2)＝16x−3。</q><span class="ref">3-1 例 9</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>括號前是負號</b></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>延用第一章去括號規則：−(x＋5)＝−x−5；−(−3x＋1)＝3x−1。</q><span class="ref">3-1 去括號規則</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>−(3x−5)＝−3x＋5；整理成四式：−(ax＋b)＝−ax−b 等。</q><span class="ref">3-1 例 10</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 7：把 −(4x＋7) 看成 (−1)×(4x＋7)，用分配律得 −4x−7。</q><span class="ref">3-1 例 7</span><span class="why">以分配律說明，而非記規則</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>以符號列式</b></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>小芳存款比小琪的 7/3 倍還多 560 元 → (7/3)a＋560；例 13：10 人付 x 張千元與 5 張百元平分 → 100x＋50。</q><span class="ref">3-1 例 13（P.183）</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>比 x 的 6 倍多 7 的數 → 6x＋7；例 4：2 個披薩各 x 元與 1 瓶 50 元汽水 → 2x＋50。</q><span class="ref">3-1 例 4</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 2：月租 300 元，超過基本時數再加收 x 元 → 300＋x；3 條巧克力 x 元、2 瓶飲料 25 元 → 3x＋50。</q><span class="ref">3-1 例 2（P.160）</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>求代數式的值</b></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>男性標準體重＝(x−80)×0.7：身高 170 公分得 63 公斤、180 公分得 70 公斤；再問女性公式 (x−70)×0.6「那我呢？」</q><span class="ref">3-1 主題 2（P.172）</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>計程車基本費 70 元、每跳表 1 次加 5 元：70＋5x，跳 1、2、8、10 次分別 75、80、110、120 元。</q><span class="ref">3-1 例 6</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>糖果每克 0.4 元加盒子 50 元：50＋0.4x，100 克付 90 元、150 克付 110 元。</q><span class="ref">3-1 例 4（P.162）</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>兩個文字符號的一次式</b><span>課綱 AC-7-1-1 二元一次式</span></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>只說明「用 a、b、c、…、x、y、z 等文字代表數」。例 13 用「x 張千元、5 張百元」，百元張數是給定數字。</q><span class="why">對照手冊釋例「1000x＋500y」，康軒把第二個量固定成數字</span></div></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>同類項說明中「2x 和 3y 不是同類項」，x、y 只在判斷同類項時同時出現。</q><span class="why">沒有用 x、y 同時描述情境的列式</span></div></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>底 a 公分、高 b 公分的三角形面積 (1/2)×a×b；a×b 簡記為 ab。</q><span class="why">只在簡記示範，沒有後續化簡或求值</span></div></td>
+        </tr>
+
+        <tr class="group"><td colspan="4">3-2 解一元一次方程式（A-7-2、A-7-3）</td></tr>
+        <tr>
+          <td class="concept"><b>解的意義</b><span>代入檢驗</span></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>3x＋5＝14 分別代入 1、2、3，x＝3 時兩邊相等；再指出用代入法解 75x＋84(30−x)＝1980 太繁瑣，引出等量公理。</q><span class="ref">3-2 方程式的解</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 1：12、15、18 代入 4x＋80＝8x＋20，左右各為 128/116、140/140、152/164，所以 x＝15。</q><span class="ref">3-2 例 1</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>11x＋70＝455 從 x＝20、30 代入檢驗，一路試到 35 才成立，比喻為「大海撈針」。</q><span class="ref">3-2 一元一次方程式的解</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>等量公理</b></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>等臂天平左 2x 公克、右 4 公克；兩邊同加 10 公克得 2x＋10＝4＋10。另說明同加、減負數也成立。</q><span class="ref">3-2 例 2–5</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>天平左放糖果（每顆 x 公克）、右放 5 公克砝碼，兩邊各加或各拿走 1 個砝碼仍平衡。</q><span class="ref">3-2 例 2–5</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>x 公克鐵球對兩個 5 公克砝碼，x＝10；兩邊同加減 3 公克、同變 2 倍或一半，天平仍平衡。</q><span class="ref">3-2 例 3、4</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>移項法則</b><span>扶助內容提醒：避免背口訣</span></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>由例 2–5 歸納：「把某項移到等號另一邊，且加變減、減變加、乘變除、除變乘」；x/7＝−3 → x＝(−3)×7。</q><span class="ref">3-2 例 6</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>x−19＝25 省略「x−19＋19＝25＋19」就像把 −19 移過去變 ＋19；例 6 把 5x−20＝30 用兩種寫法左右並列。</q><span class="ref">3-2 例 6、7</span></div></td>
+          <td><div class="eg"><span class="mk part">◐ 規則化</span><q>x−5＝3 → x＝3＋5，「相當於將 (−5) 移項並改為 (＋5)」，再整理成四式規則表（x−a＝b⇒x＝b＋a 等）。</q><span class="ref">3-2 例 5</span><span class="why">有等量公理推導，但最後收斂成規則表，宜多回到天平</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>分數係數去分母</b></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 9：兩邊同乘 12，(x/2 − 1/4)×12＝(2/3 − x)×12。</q><span class="ref">3-2 例 9</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 9：2x＝(2/3)x−16，解一直接移項得 (4/3)x＝−16，解二兩邊同乘 3 得 6x＝2x−48，兩法都得 x＝−12。</q><span class="ref">3-2 例 9</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 8：(2x−3)/6＝(x+6)/8，因 [6, 8]＝24，兩邊同乘 24。</q><span class="ref">3-2 例 8</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>錯誤分析</b><span>找出錯誤步驟</span></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>挑錯題：小翊、小妍化簡 (x＋3)/2 − (x−1)/3，標出開始錯的地方；自我檢核「(x＋4)×(−4)＝x−16 是否正確」。</q><span class="ref">3-1、3-2 挑錯題</span></div></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>教學眉批：比較例 7 兩種解法，「用自己的話說明省略了哪些步驟」。</q><span class="why">未見呈現學生錯誤解法的題目</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>裕凱解 (1/2)x − 5/6＝(1/3)x＋10，寫成 3x−5＝2x＋10，右邊 10 漏乘 6，正解 x＝65。</q><span class="ref">3-2 找錯</span></div></td>
+        </tr>
+
+        <tr class="group"><td colspan="4">3-3 應用問題與會考缺口相關概念</td></tr>
+        <tr>
+          <td class="concept"><b>解的合理性</b></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 8：魚缸 110 元、孔雀魚每隻 20 元，收 280 元 → 110＋20x＝280，x＝8.5 隻，與事實不符。</q><span class="ref">3-3 例 8</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 7：博士與兒子年齡（今年與 8 年後），解出的年齡不合理。</q><span class="ref">3-3 例 7</span></div></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 7：門票每張 140 元加運費 40 元共 900 元 → x＝43/7，張數不是整數，不合理。</q><span class="ref">3-3 例 7</span></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>數線上的代數式</b><span>缺口 G6・107 第 12 題</span></td>
+          <td><div class="eg"><span class="mk full">● 有講解</span><q>例 1：青蛙 A 在 −17 往左跳 x，B 在 5 往右跳 3x，位置互為相反數 → (−17−x)＋(5＋3x)＝0，x＝6。</q><span class="ref">3-3 例 1（P.204）</span></div></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>3-1 自評與教學眉批標註「107 會考第 12 題」。</q><span class="why">正文沒有用 x 表示數線上的點</span></div></td>
+          <td><div class="eg"><span class="mk none">○ 未見</span><q>第三章未見數線情境；數線只在第一章出現。</q></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>分段計費</b><span>缺口 G4・112 第 18 題</span></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>3-1 自我評量附 112 會考停車題：08:00–20:00 每小時 20 元、最多 100 元；20:00–08:00 每小時 5 元、最多 30 元，跨時段分開計費。</q><span class="why">正文沒有分段計費例題</span></div></td>
+          <td><div class="eg"><span class="mk none">○ 未見</span><q>最接近的是計程車 70＋5x，費率只有一種。</q></div></td>
+          <td><div class="eg"><span class="mk none">○ 未見</span><q>最接近的是月租 300 元「超過基本時數再加收 x 元」，但 x 是加收金額，不是超過的時數。</q></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>公式反求</b><span>缺口 G5・108 非選 1</span></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>3-2 末附 108 會考：防護率＝(SPF−1)/SPF×100%，求防護率 90% 的 SPF（答 10），並判斷文宣是否合理。</q><span class="why">正文的分數方程式，未知數都在分子</span></div></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>3-3 教學眉批列出「108 會考非選 1」。</q><span class="why">例 9 的 2x＝(2/3)x−16 未知數仍在分子</span></div></td>
+          <td><div class="eg"><span class="mk none">○ 未見</span><q>例 8 的 (2x−3)/6＝(x+6)/8 分母都是數字。</q></div></td>
+        </tr>
+        <tr>
+          <td class="concept"><b>比較兩個式子、推論變化</b><span>缺口 G1、G2・113 第 25 題、115 第 25 題</span></td>
+          <td><div class="eg"><span class="mk none">○ 未見</span><q>標準體重只代入單一身高求值；女性公式只問「那我呢？」，沒有比較兩條公式。</q></div></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>「70＋5x 的值，會隨著 x 的值不同而有所改變」，只觀察一個式子的變化。</q></div></td>
+          <td><div class="eg"><span class="mk part">◐ 只有觸及</span><q>「x 的值改變時，8−2x 與 6x 的值會相同嗎？」除了 x＝1 都不同，用來說明不能簡記。</q><span class="ref">3-1 P.162</span><span class="why">三版本中唯一比較兩個式子的例子，但目的在簡記，沒有回到情境判斷</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 3. 會考相關題 ============ -->
+<section class="block" id="cap">
+  <div class="sec-head">
+    <div class="eyebrow">三、會考相關試題</div>
+    <h2>107～115 年會考考過的本章概念</h2>
+    <p>通過率取自心測中心官方「數學科試題分析」（資料夾內有 107、108、110～115 年）。111 年起官方標示學習內容編碼；107、108、110 年為舊編碼或未標，依評量目標判定。右欄為三版本備課用書是否收錄該題。</p>
+  </div>
+
+  <div class="trend">
+    <div class="yr"><span class="y">111 年｜A-7-3</span><span class="t">依對話列方程式求預算</span><span class="c">第 11 題・通過率 0.70</span></div>
+    <div class="yr"><span class="y">112 年｜A-7-1</span><span class="t">分段計費列一元一次式</span><span class="c">第 18 題・通過率 0.43</span></div>
+    <div class="yr"><span class="y">113 年｜A-7-1</span><span class="t">公式求值後在情境中詮釋</span><span class="c">第 25 題・通過率 0.33</span></div>
+    <div class="yr"><span class="y">114 年｜A-7-3</span><span class="t">菜單情境，間接設元求範圍</span><span class="c">第 14 題・通過率 0.56</span></div>
+    <div class="yr"><span class="y">115 年｜A-7-1</span><span class="t">兩個關係式推論大小</span><span class="c">第 25 題・通過率 0.43</span></div>
+  </div>
+  <p style="max-width:72ch;color:var(--muted)">111～115 年每年各有一題標示為 A-7-1 或 A-7-3，其中三題考「列式與詮釋」而非解方程式的計算，通過率都在 0.45 以下。會考在本章的重心是讀懂情境、寫出關係、解釋結果。</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>年度・題號</th><th>學習內容</th><th>考點（情境）</th><th>全體通過率</th><th>三版本收錄</th></tr></thead>
+      <tbody>
+        <tr><td>107・第 10 題</td><td><code>A-7-3</code><span class="small">舊碼 A-4-07</span></td><td>促銷傳單，由第一天銷售額反推總銷售額（微波爐）</td><td><div class="pbar" style="--p:53%"><b>0.53</b><i></i></div></td><td><div class="cite"><span class="hl">翰林</span></div></td></tr>
+        <tr><td>107・第 12 題</td><td><code>A-7-1</code><span class="small">舊碼 N-4-07</span></td><td>數線上點 C 表示 x，以代數式表示 B 點（含相反數）</td><td><div class="pbar low" style="--p:41%"><b>0.41</b><i></i></div></td><td><div class="cite"><span class="hl">翰林</span></div><span class="small">康軒 3-3 例 1 有同概念例題</span></td></tr>
+        <tr><td>108・第 16 題</td><td><code>A-7-1</code>／F<span class="small">舊碼 A-4-04</span></td><td>咖啡豆計價，寫出 y 與 x 的關係式</td><td><div class="pbar" style="--p:61%"><b>0.61</b><i></i></div></td><td><div class="cite"><span class="no">未見</span></div></td></tr>
+        <tr><td>108・第 20 題</td><td>A-7-5<span class="small">舊碼 A-4-12；設一個未知數也可解</span></td><td>纜車去回程人數與總費用，求團員人數（官方目標為聯立方程式，翰林、南一放在本章應用題）</td><td><div class="pbar" style="--p:45%"><b>0.45</b><i></i></div></td><td><div class="cite"><span class="hl">翰林</span><span class="ny">南一</span></div></td></tr>
+        <tr><td>108・第 21 題</td><td><code>A-7-1</code><span class="small">舊碼 A-4-03</span></td><td>菜單套餐，以 x、y 表示 A 餐份數（二元一次式）</td><td><div class="pbar low" style="--p:42%"><b>0.42</b><i></i></div></td><td><div class="cite"><span class="no">未見</span></div></td></tr>
+        <tr><td>108・非選 1</td><td><code>A-7-3</code></td><td>SPF 防護率公式反求 SPF，並判斷文宣是否合理</td><td><span class="small">非選，依級分計</span></td><td><div class="cite"><span class="kx">康軒</span><span class="hl">翰林</span></div></td></tr>
+        <tr><td>109・第 14 題</td><td><code>A-7-1</code></td><td>披薩調漲 10％、會員優惠，列出售價代數式</td><td><div class="pbar" style="--p:54%"><b>0.54</b><i></i></div><span class="small">取自南一標註，資料夾無 109 官方檔</span></td><td><div class="cite"><span class="hl">翰林</span><span class="ny">南一</span></div></td></tr>
+        <tr><td>110・第 16 題</td><td><code>A-7-3</code></td><td>飯糰與飲料組合促銷，找最便宜結帳方式</td><td><div class="pbar" style="--p:58%"><b>0.58</b><i></i></div></td><td><div class="cite"><span class="hl">翰林</span><span class="ny">南一</span></div></td></tr>
+        <tr><td>111・第 11 題</td><td><code>A-7-3</code></td><td>依兄弟對話列 (x＋2000)×0.75＝x−100</td><td><div class="pbar" style="--p:70%"><b>0.70</b><i></i></div></td><td><div class="cite"><span class="kx">康軒</span><span class="hl">翰林</span><span class="ny">南一</span></div></td></tr>
+        <tr><td>112・第 18 題</td><td><code>A-7-1</code></td><td>停車場日夜分段收費，列出停 x 小時的費用</td><td><div class="pbar low" style="--p:43%"><b>0.43</b><i></i></div></td><td><div class="cite"><span class="kx">康軒</span></div></td></tr>
+        <tr><td>113・第 16 題</td><td>F-8-1</td><td>每十年升溫 0.08℃，列第 x 年氣溫（單位換算）</td><td><div class="pbar" style="--p:52%"><b>0.52</b><i></i></div></td><td><div class="cite"><span class="kx">康軒</span><span class="hl">翰林</span><span class="ny">南一</span></div></td></tr>
+        <tr><td>113・第 25 題</td><td><code>A-7-1</code></td><td>理想體重三種算法，求值後判斷可能歸類</td><td><div class="pbar low" style="--p:33%"><b>0.33</b><i></i></div></td><td><div class="cite"><span class="no">未見</span></div></td></tr>
+        <tr><td>114・第 14 題</td><td><code>A-7-3</code></td><td>咖啡店菜單，全部售出收入 8700 元，求早餐組合收入範圍</td><td><div class="pbar" style="--p:56%"><b>0.56</b><i></i></div></td><td><div class="cite"><span class="kx">康軒</span><span class="hl">翰林</span></div></td></tr>
+        <tr><td>115・第 25 題</td><td><code>A-7-1</code></td><td>輪胎轉速、周長與指示速率，推論實際速率 p、q 與 60 的大小</td><td><div class="pbar low" style="--p:43%"><b>0.43</b><i></i></div></td><td><div class="cite"><span class="no">未見</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 4. 缺口分析 ============ -->
+<section class="block" id="gaps">
+  <div class="sec-head">
+    <div class="eyebrow">四、缺口分析</div>
+    <h2>會考考過、三版本第三章沒有教到的地方</h2>
+    <p>判斷標準：課本正文與例題沒有對應的教學。只在備課用書以「歷屆試題」附上的，列為「僅歷屆題帶過」，因為學生在課本上沒有學過解題方法。</p>
+  </div>
+  <div class="legend">
+    <span><span class="mk none">三版皆未處理</span></span>
+    <span><span class="mk part">僅歷屆題帶過</span></span>
+  </div>
+
+  <div class="gaps">
+    <article class="gap">
+      <div class="top"><h3>公式求值後，回到情境做判斷</h3><span class="mk none">三版皆未處理</span></div>
+      <span class="id">G1・A-7-1・a-IV-1</span>
+      <div class="ex"><b>113 第 25 題｜0.33</b>　用不同的理想體重算法求值，再依「實際體重介於理想體重 90%～110% 為正常」判斷可能歸類。這是近五年本章通過率最低的題目，精熟組也只有 0.56。</div>
+      <dl>
+        <dt>三版本</dt><dd>都有「求代數式的值」，康軒甚至用標準體重公式，但都停在算出一個數。沒有「比較兩個公式」或「在一段範圍內判斷結果」的練習。</dd>
+        <dt>最接近例</dt><dd class="near"><span>康軒：(x−80)×0.7，170 公分得 63 公斤，只代入單一值。</span><span>南一 P.162：問 8−2x 與 6x 何時相同，目的是說明不能簡記。</span></dd>
+        <dt>教學建議</dt><dd>在求值例題後加一問：「身高改變時，兩種算法的結果誰大？」讓學生列表觀察，再回到情境下結論。</dd>
+      </dl>
+    </article>
+
+    <article class="gap">
+      <div class="top"><h3>由關係式推論大小方向</h3><span class="mk none">三版皆未處理</span></div>
+      <span class="id">G2・A-7-1・a-IV-1</span>
+      <div class="ex"><b>115 第 25 題｜0.43</b>　速率＝轉速×周長。儀器轉速偏高、輪胎周長變小時，判斷實際速率比 60 大或小。不需要算出數值，要從式子結構推論。</div>
+      <dl>
+        <dt>三版本</dt><dd>代數式都用來「列式→化簡→求值」，沒有「某一個量變大，結果會怎樣」的定性推論。</dd>
+        <dt>最接近例</dt><dd class="near"><span>翰林例 6 前的計程車 70＋5x：「值會隨著 x 不同而改變」，只列表觀察，沒有推論方向。</span></dd>
+        <dt>教學建議</dt><dd>用 3-1 的乘積式（如 單價×數量）做「哪個量變了、結果往哪走」的口頭推理，再連結到 7 下比例。</dd>
+      </dl>
+    </article>
+
+    <article class="gap">
+      <div class="top"><h3>兩個文字符號的一次式</h3><span class="mk none">三版皆未處理</span></div>
+      <span class="id">G3・A-7-1・AC-7-1-1</span>
+      <div class="ex"><b>108 第 21 題｜0.42</b>　以 x 杯飲料、y 份沙拉表示 A 餐份數。<b>108 第 16 題｜0.61</b>　寫出 y 與 x 的關係式。</div>
+      <dl>
+        <dt>三版本</dt><dd>第三章以「一元一次式」命名，例題只出現一個未知數。課程手冊的一次式含 x＋2y−1，基本學習內容 AC-7-1-1 也明列「二元一次式」，三版本都延到 7 下第 1 章。</dd>
+        <dt>最接近例</dt><dd class="near"><span>康軒例 13：「x 張千元與 5 張百元」，百元張數固定。</span><span>翰林：「2x 和 3y 不是同類項」。南一：(1/2)×a×b 只做簡記。</span></dd>
+        <dt>教學建議</dt><dd>3-1 列式時加 1～2 題「千元 x 張、五百元 y 張共多少元」，先練表示與代入求值，不急著解。</dd>
+      </dl>
+    </article>
+
+    <article class="gap">
+      <div class="top"><h3>分段計費的列式</h3><span class="mk part">僅歷屆題帶過</span></div>
+      <span class="id">G4・A-7-1・a-IV-1</span>
+      <div class="ex"><b>112 第 18 題｜0.43</b>　停車場白天、夜間收費不同，進場後停 x 小時、離場跨過收費時段，要分段寫出費用。</div>
+      <dl>
+        <dt>三版本</dt><dd>康軒 3-1 備課收錄這題為歷屆試題；翰林、南一未見。三版本正文的列式情境都是單一單價，沒有「超過某個時間改用另一種計價」。</dd>
+        <dt>最接近例</dt><dd class="near"><span>翰林計程車 70＋5x（單一費率）。</span><span>南一例 2：月租 300 元「超過基本時數再加收 x 元」，x 是金額不是時數。</span></dd>
+        <dt>教學建議</dt><dd>以手機資費、停車費做「前 a 小時一種價、之後另一種價」的列式，搭配時間軸圖。</dd>
+      </dl>
+    </article>
+
+    <article class="gap">
+      <div class="top"><h3>公式反求與合理性論證（未知數在分母）</h3><span class="mk part">僅歷屆題帶過</span></div>
+      <span class="id">G5・A-7-3・非選擇題</span>
+      <div class="ex"><b>108 非選 1</b>　防護率＝(SPF−1)/SPF×100%。已知防護率 90% 反求 SPF，並寫出理由判斷文宣是否合理。</div>
+      <dl>
+        <dt>三版本</dt><dd>康軒（3-2 末）、翰林（3-3）收錄為歷屆題。正文的方程式未知數都在分子，沒有「兩邊同乘未知數化為一次方程式」，也沒有寫理由的論證格式。</dd>
+        <dt>最接近例</dt><dd class="near"><span>康軒例 9 (x/2 − 1/4)×12、翰林例 9 2x＝(2/3)x−16、南一例 8 (2x−3)/6＝(x+6)/8，分母都是數字。</span></dd>
+        <dt>教學建議</dt><dd>在分數係數例題後補一題「把公式變成方程式」，並用非選評分規準練習完整寫出理由。</dd>
+      </dl>
+    </article>
+
+    <article class="gap">
+      <div class="top"><h3>數線位置的代數表示</h3><span class="mk part">只有康軒教到</span></div>
+      <span class="id">G6・A-7-1 × N-7-5</span>
+      <div class="ex"><b>107 第 12 題｜0.41</b>　C 點表示 x，AC＝1，OA＝OB，問 B 點表示的數，答案是 −(x−1) 這類含相反數的代數式。</div>
+      <dl>
+        <dt>三版本</dt><dd>康軒 3-3 例 1 有講解；翰林只在 3-1 自評標註此題；南一第三章未見數線情境。</dd>
+        <dt>課本例子</dt><dd class="near"><span>康軒例 1：青蛙 A 從 −17 往左跳 x、B 從 5 往右跳 3x，位置互為相反數，列 (−17−x)＋(5＋3x)＝0，得 x＝6。</span></dd>
+        <dt>教學建議</dt><dd>翰林、南一可借用康軒青蛙題，或連結第一章：「點 P 表示 x，往左 3 單位是哪個式子？它的相反數呢？」</dd>
+      </dl>
+    </article>
+  </div>
+
+  <div class="notes">
+    <div class="note">
+      <h3>部分觸及：間接設元、答案以範圍呈現</h3>
+      <p>114 第 14 題（0.56，待加強組 0.30）要設「組合份數」為 x，所求卻是收入範圍。三版本例題幾乎都「設所求為 x」；翰林 3-3 例 4 比較兩種設法，康軒、翰林收錄此題。建議多給「設的和問的不同」的題目。</p>
+    </div>
+    <div class="note">
+      <h3>已覆蓋良好：情境列方程式求解</h3>
+      <p>111 第 11 題（0.70）三版本都收錄，例題中也有同型的打折列式，是本章會考通過率最高的一類。基本的等量公理、移項、去分母未在 111～115 年單獨命題。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. 資料來源 ============ -->
+<section class="block" id="sources">
+  <div class="sec-head">
+    <div class="eyebrow">五、資料來源與說明</div>
+    <h2>資料來源</h2>
+  </div>
+  <div class="sources">
+    <ul>
+      <li><code>0分析\教科書\康軒\03_115國中數學1上備課PDF</code>：第 3 章章節架構表、3-1～3-3 備課 PDF；<code>04_115國中數學1上習教PDF</code> 第 3 章</li>
+      <li><code>0分析\教科書\翰林\115上…備課PDF_一年級</code>：目次、L03 備課；<code>115上…教用習作…一年級</code> 第 3 章</li>
+      <li><code>0分析\教科書\南一\備課用書PDF</code>：數學 1 上 CH3、核心概念地圖；<code>習作教用本PDF</code> 1 上 CH3</li>
+      <li><code>0分析\領綱與基本學習內容</code>：數學領綱（正式版）、<code>108課綱數學領域課程手冊解析\7年級</code>、<code>110年課綱修訂版_國中數學科基本學習內容(完整版)</code>、領綱與學習扶助對照手冊</li>
+      <li><code>0分析\會考數據</code>：107、108、110～115 年數學科試題分析（官方 PDF）</li>
+      <li><code>0分析\教科書\國中數學三大出版社教材深度分析與教學比較手冊.docx</code>（章名對照參考）</li>
+    </ul>
+    <p>說明：翰林 PDF 的中文字型未嵌入字碼對照，文字以字型編碼還原，少數字可能誤讀，已以上下文核對例題名稱。109 年會考無官方分析檔，數據取自教科書標註。南一標註 110 會考(一) 飯糰題通過率 52%，官方分析為 0.5833，本頁採官方數據。「收錄」欄只計入在備課用書擷取文字中確實找到的題目。</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">整理日期 2026 年 10 月｜供數學領域共備與學力提升工作坊參考</div>
+</footer>
+</body>
+</html>
